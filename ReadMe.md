@@ -1,7 +1,7 @@
-# **Astra – A Custom C++ Editor for Competitive Programming** 🚀  
+# **AstraX – A Custom C++ Editor for Competitive Programming** 🚀  
 
-### **🔹 What is Astra?**  
-Astra is a **lightweight, terminal-based code editor** built for **competitive programmers** who need **speed, efficiency, and zero distractions**. Inspired by **Vim**, it features a **modal workflow, built-in C++ execution, and file management**, all within the terminal.  
+### **🔹 What is AstraX?**  
+AstraX is a **lightweight, terminal-based code editor** built for **competitive programmers** who need **speed, efficiency, and zero distractions**. Inspired by **Vim**, it features a **modal workflow, built-in C++ execution, and file management**, all within the terminal.  
 
 ### **⚡ Features**  
 ✅ **Blazing Fast & Minimalist** – No bloat, just raw performance.  
@@ -14,7 +14,7 @@ Astra is a **lightweight, terminal-based code editor** built for **competitive p
 ✅ **File Management** – Create, rename, and delete files **without leaving Astra**.  
 
 ### **🔧 How to Use**  
-1. **Open Astra** → `./astra`  
+1. **Open AstraX** → `./AstraX`  
 2. **Navigate in Normal Mode**  
 3. **Switch to Insert Mode** (`i`) → Start writing code  
 4. **Switch to Command Mode** (`:`) → Run `:run filename.cpp` to compile and execute  
@@ -22,7 +22,7 @@ Astra is a **lightweight, terminal-based code editor** built for **competitive p
 ### **🎯 Roadmap**  
 🚀 **Syntax Highlighting** | 🚀 **Multi-File Support** | 🚀 **Debugger Integration**  
 
-💡 **Astra will be open-source soon!** Stay tuned and contribute to the future of **lightweight CP coding**.  
+💡 **AstraX is now open-sourced!** Stay tuned and contribute to the future of **lightweight CP coding**.  
 
 📌 **License:** MIT  
 📌 **Contributors Welcome!**  
