@@ -26,7 +26,3 @@ Astra is a **lightweight, terminal-based code editor** built for **competitive p
 
 📌 **License:** MIT  
 📌 **Contributors Welcome!**  
-
----
-
-This keeps it **clean, technical, and engaging**—perfect for a **GitHub README**. Let me know if you need modifications! 🚀
