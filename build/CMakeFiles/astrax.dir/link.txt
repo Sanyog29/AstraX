@@ -1,3 +1,0 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\astrax.dir/objects.a
-C:\MinGW\bin\ar.exe qc CMakeFiles\astrax.dir/objects.a @CMakeFiles\astrax.dir\objects1.rsp
-C:\MinGW\bin\c++.exe -O3 -DNDEBUG -Wl,--whole-archive CMakeFiles\astrax.dir/objects.a -Wl,--no-whole-archive -o bin\astrax.exe -Wl,--out-implib,lib\libastrax.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\astrax.dir\linkLibs.rsp
