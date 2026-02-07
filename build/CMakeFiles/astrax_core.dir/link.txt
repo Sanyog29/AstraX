@@ -1,0 +1,2 @@
+C:\MinGW\bin\ar.exe qc lib\libastrax_core.a CMakeFiles/astrax_core.dir/src/buffer.cpp.obj CMakeFiles/astrax_core.dir/src/command.cpp.obj CMakeFiles/astrax_core.dir/src/renderer.cpp.obj CMakeFiles/astrax_core.dir/src/search.cpp.obj CMakeFiles/astrax_core.dir/src/config.cpp.obj CMakeFiles/astrax_core.dir/src/editor.cpp.obj CMakeFiles/astrax_core.dir/src/syntax/highlighter.cpp.obj CMakeFiles/astrax_core.dir/src/syntax/cpp_highlighter.cpp.obj CMakeFiles/astrax_core.dir/src/terminal_windows.cpp.obj
+C:\MinGW\bin\ranlib.exe lib\libastrax_core.a

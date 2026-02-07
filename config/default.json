@@ -1,0 +1,55 @@
+{
+  "showLineNumbers": true,
+  "showStatusBar": true,
+  "syntaxHighlighting": true,
+  "autoIndent": true,
+  "tabSize": 4,
+  "expandTabs": true,
+  "theme": "default",
+  "colorScheme": "dark",
+  "keybindings": {
+    "normal": {
+      "h": "cursor.left",
+      "j": "cursor.down",
+      "k": "cursor.up",
+      "l": "cursor.right",
+      "w": "cursor.wordForward",
+      "b": "cursor.wordBackward",
+      "0": "cursor.lineStart",
+      "$": "cursor.lineEnd",
+      "g": "cursor.fileStart",
+      "G": "cursor.fileEnd",
+      "i": "mode.insert",
+      "a": "mode.insertAfter",
+      "o": "edit.insertLineBelow",
+      "O": "edit.insertLineAbove",
+      "x": "edit.deleteChar",
+      "dd": "edit.deleteLine",
+      "yy": "edit.yankLine",
+      "p": "edit.paste",
+      "P": "edit.pasteBefore",
+      "u": "edit.undo",
+      "ctrl+r": "edit.redo",
+      "J": "edit.joinLines",
+      ":": "mode.command",
+      "/": "mode.search"
+    }
+  },
+  "filetypes": {
+    "cpp": {
+      "extensions": [".cpp", ".cc", ".cxx", ".h", ".hpp", ".hxx"],
+      "tabSize": 4,
+      "expandTabs": true
+    },
+    "python": {
+      "extensions": [".py"],
+      "tabSize": 4,
+      "expandTabs": true
+    },
+    "javascript": {
+      "extensions": [".js", ".jsx", ".ts", ".tsx"],
+      "tabSize": 2,
+      "expandTabs": true
+    }
+  }
+}

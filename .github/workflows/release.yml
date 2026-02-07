@@ -1,0 +1,151 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            name: windows
+            ext: .exe
+            archive: zip
+          - os: ubuntu-latest
+            name: linux
+            ext: ""
+            archive: tar.gz
+          - os: macos-latest
+            name: macos
+            ext: ""
+            archive: tar.gz
+
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Get version from tag
+      id: version
+      shell: bash
+      run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+    - name: Install Dependencies (Linux)
+      if: matrix.os == 'ubuntu-latest'
+      run: sudo apt-get update && sudo apt-get install -y build-essential cmake
+
+    - name: Configure CMake
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DASTRAX_BUILD_TESTS=OFF -DASTRAX_ENABLE_WARNINGS=OFF
+
+    - name: Build
+      run: cmake --build build --config Release
+
+    - name: Create Release Directory
+      shell: bash
+      run: |
+        mkdir -p release/astrax-${{ steps.version.outputs.VERSION }}-${{ matrix.name }}
+        
+    - name: Copy Files (Windows)
+      if: matrix.os == 'windows-latest'
+      shell: bash
+      run: |
+        cp build/bin/Release/astrax.exe release/astrax-${{ steps.version.outputs.VERSION }}-${{ matrix.name }}/
+        cp README.md release/astrax-${{ steps.version.outputs.VERSION }}-${{ matrix.name }}/
+        cp LICENSE release/astrax-${{ steps.version.outputs.VERSION }}-${{ matrix.name }}/
+        cp -r config release/astrax-${{ steps.version.outputs.VERSION }}-${{ matrix.name }}/
+
+    - name: Copy Files (Unix)
+      if: matrix.os != 'windows-latest'
+      shell: bash
+      run: |
+        cp build/bin/astrax release/astrax-${{ steps.version.outputs.VERSION }}-${{ matrix.name }}/
+        cp README.md release/astrax-${{ steps.version.outputs.VERSION }}-${{ matrix.name }}/
+        cp LICENSE release/astrax-${{ steps.version.outputs.VERSION }}-${{ matrix.name }}/
+        cp -r config release/astrax-${{ steps.version.outputs.VERSION }}-${{ matrix.name }}/
+        chmod +x release/astrax-${{ steps.version.outputs.VERSION }}-${{ matrix.name }}/astrax
+
+    - name: Create Archive (Windows)
+      if: matrix.os == 'windows-latest'
+      shell: pwsh
+      run: |
+        Compress-Archive -Path release/astrax-${{ steps.version.outputs.VERSION }}-${{ matrix.name }} -DestinationPath astrax-${{ steps.version.outputs.VERSION }}-${{ matrix.name }}.zip
+
+    - name: Create Archive (Unix)
+      if: matrix.os != 'windows-latest'
+      run: |
+        cd release
+        tar -czvf ../astrax-${{ steps.version.outputs.VERSION }}-${{ matrix.name }}.tar.gz astrax-${{ steps.version.outputs.VERSION }}-${{ matrix.name }}
+
+    - name: Upload Release Asset
+      uses: actions/upload-artifact@v4
+      with:
+        name: astrax-${{ matrix.name }}
+        path: astrax-${{ steps.version.outputs.VERSION }}-${{ matrix.name }}.${{ matrix.archive }}
+
+  create-release:
+    needs: build-release
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Get version from tag
+      id: version
+      run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts
+
+    - name: Display artifacts
+      run: ls -la artifacts/
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: AstraX ${{ steps.version.outputs.VERSION }}
+        body: |
+          ## AstraX ${{ steps.version.outputs.VERSION }}
+          
+          A modern Vim-like terminal text editor with syntax highlighting.
+          
+          ### Downloads
+          - **Windows**: `astrax-${{ steps.version.outputs.VERSION }}-windows.zip`
+          - **Linux**: `astrax-${{ steps.version.outputs.VERSION }}-linux.tar.gz`
+          - **macOS**: `astrax-${{ steps.version.outputs.VERSION }}-macos.tar.gz`
+          
+          ### Installation
+          
+          **Windows:**
+          ```cmd
+          unzip astrax-${{ steps.version.outputs.VERSION }}-windows.zip
+          astrax.exe myfile.cpp
+          ```
+          
+          **Linux/macOS:**
+          ```bash
+          tar -xzf astrax-${{ steps.version.outputs.VERSION }}-linux.tar.gz
+          ./astrax myfile.cpp
+          ```
+          
+          ### Features
+          - Vim-like modal editing (Normal, Insert, Command, Search modes)
+          - Syntax highlighting for C/C++
+          - Built-in compile and run (`:run` command)
+          - Cross-platform (Windows, Linux, macOS)
+          
+        draft: false
+        prerelease: false
+        files: |
+          artifacts/astrax-windows/*
+          artifacts/astrax-linux/*
+          artifacts/astrax-macos/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

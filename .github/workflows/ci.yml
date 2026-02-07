@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Configure CMake
+      run: cmake -B build -DASTRAX_BUILD_TESTS=ON -DASTRAX_ENABLE_WARNINGS=ON
+
+    - name: Build
+      run: cmake --build build --config Release
+
+    - name: Test
+      working-directory: build
+      run: ctest -C Release --output-on-failure
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: astrax-windows
+        path: build/bin/Release/astrax.exe
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Dependencies
+      run: sudo apt-get update && sudo apt-get install -y build-essential cmake
+
+    - name: Configure CMake
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DASTRAX_BUILD_TESTS=ON -DASTRAX_ENABLE_WARNINGS=ON
+
+    - name: Build
+      run: cmake --build build
+
+    - name: Test
+      working-directory: build
+      run: ctest --output-on-failure
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: astrax-linux
+        path: build/bin/astrax
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Configure CMake
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DASTRAX_BUILD_TESTS=ON -DASTRAX_ENABLE_WARNINGS=ON
+
+    - name: Build
+      run: cmake --build build
+
+    - name: Test
+      working-directory: build
+      run: ctest --output-on-failure
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: astrax-macos
+        path: build/bin/astrax
+
+  sanitizers:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Configure with Sanitizers
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Debug -DASTRAX_ENABLE_SANITIZERS=ON -DASTRAX_BUILD_TESTS=ON
+
+    - name: Build
+      run: cmake --build build
+
+    - name: Test with Sanitizers
+      working-directory: build
+      run: ctest --output-on-failure
+      env:
+        ASAN_OPTIONS: detect_leaks=1
+        UBSAN_OPTIONS: print_stacktrace=1
