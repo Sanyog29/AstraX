@@ -6,6 +6,7 @@
 #include <sys/ioctl.h>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <string>
 
 namespace astrax {
